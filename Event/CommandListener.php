@@ -16,7 +16,8 @@ use Symfony\Component\Yaml\Yaml;
  */
 class CommandListener
 {
-    const FILE_PATH = __DIR__ . '/../Resources/config/versions.yml';
+    const FILE_PATH = __DIR__ . '/../Resources/config';
+    const FILE_NAME = 'versions.yml';
 
     /** @var array $allowedCommands */
     private $allowedCommands;
@@ -31,8 +32,6 @@ class CommandListener
     }
 
     /**
-     * @todo: add input parameters ?
-     * @todo: check if directories and file exists
      * @param ConsoleCommandEvent $event
      */
     public function run(ConsoleCommandEvent $event)
@@ -41,13 +40,25 @@ class CommandListener
         $command = $event->getCommand();
 
         if (in_array($command->getName(), $this->allowedCommands)) {
-            $config = @Yaml::parse(file_get_contents(self::FILE_PATH));
-            $oldVersion = (int)@$config['framework']['assets']['version']++;
+            $filename = self::FILE_PATH . '/' . self::FILE_NAME;
 
+            if (file_exists($filename)) {
+                $config = Yaml::parse(file_get_contents($filename));
+            }
+
+            if (
+                !isset($config['framework'])
+                or !isset($config['framework']['assets'])
+                or !isset($config['framework']['assets']['version'])
+            ) {
+                $config = array('framework' => array('assets' => array('version' => 0)));
+            }
+            $oldVersion = $config['framework']['assets']['version']++;
+            
             $output->writeln("Updating asset_version from <info>$oldVersion</info>"
                 . " to <info>{$config['framework']['assets']['version']}</info>");
 
-            file_put_contents(self::FILE_PATH, Yaml::dump($config));
+            file_put_contents($filename, Yaml::dump($config));
         }
     }
 }

@@ -25,8 +25,8 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('leoo_team_cache_cleaner');
         $rootNode
             ->children()
-                ->variableNode('commands')->end();
-//            ->end();
+                ->variableNode('commands')
+            ->end();
 
         return $treeBuilder;
     }
