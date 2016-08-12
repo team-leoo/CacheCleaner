@@ -39,6 +39,6 @@ leoo_team_cache_cleaner:
 If you have done the second step from configuration part, each time you'll call a command which is declared in leoo_team_cache_cleaner.commands, the version will be updated automatically.
 You can also use the ccleaner commands:
 
-- ccleaner:update [-c=VERSION_NUMBER] (update the version, parameter is optional)
-- ccleaner:rollback [-c=VERSION_NUMBER] (rollback the version, parameter is optional)
-- ccleaner:show (display current version)
+- ccleaner:update (-c=VERSION_NUMBER) --> update the version, parameter is optional
+- ccleaner:rollback (-c=VERSION_NUMBER) --> rollback the version, parameter is optional
+- ccleaner:show --> display current version
