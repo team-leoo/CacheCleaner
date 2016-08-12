@@ -1,0 +1,20 @@
+/Resources/config/versions.yml
+
+# Linux
+*~
+
+### Vim ###
+# swap
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+# session
+Session.vim
+# temporary
+.netrwhist
+*~
+# auto-generated tag files
+tags
+
+### Symfony ###
+# Backup entities generated with doctrine:generate:entities command
+*/Entity/*~

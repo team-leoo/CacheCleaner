@@ -1,0 +1,5 @@
+services:
+    daniloff_cache_cleaner.example:
+        class: 'Daniloff\CacheCleanerBundle\Event\CommandListener'
+        tags:
+            - { name: kernel.event_listener, event: 'console.command', method: 'onExec' }
