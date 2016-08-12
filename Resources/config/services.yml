@@ -1,5 +1,7 @@
 services:
-    daniloff_cache_cleaner.example:
-        class: 'Daniloff\CacheCleanerBundle\Event\CommandListener'
+    leoo_team.cache_cleaner.command_listener:
+        class: 'LeooTeam\CacheCleanerBundle\Event\CommandListener'
+        arguments:
+            - "@=container.hasParameter('leoo_team_cache_cleaner.commands') ? parameter('leoo_team_cache_cleaner.commands') : []"
         tags:
-            - { name: kernel.event_listener, event: 'console.command', method: 'onExec' }
+            - { name: kernel.event_listener, event: 'console.command', method: 'run' }

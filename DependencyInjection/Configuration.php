@@ -1,14 +1,18 @@
 <?php
+/**
+ * @author: Aleksandr Daniloff <adaniloff.dev@gmail.com>
+ */
 
-namespace Daniloff\CacheCleanerBundle\DependencyInjection;
+/** Namespaces */
+namespace LeooTeam\CacheCleanerBundle\DependencyInjection;
 
+/** Usages */
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * This is the class that validates and merges configuration from your app/config files.
- *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/configuration.html}
+ * Class Configuration
+ * @package LeooTeam\CacheCleanerBundle\DependencyInjection
  */
 class Configuration implements ConfigurationInterface
 {
@@ -18,11 +22,11 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('daniloff_cache_cleaner');
-
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $rootNode = $treeBuilder->root('leoo_team_cache_cleaner');
+        $rootNode
+            ->children()
+                ->variableNode('commands')->end();
+//            ->end();
 
         return $treeBuilder;
     }

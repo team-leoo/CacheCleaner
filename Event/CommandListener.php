@@ -1,37 +1,46 @@
 <?php
+/**
+ * @author: Aleksandr Daniloff <adaniloff.dev@gmail.com>
+ */
 
-namespace Daniloff\CacheCleanerBundle\Event;
+/** Namespaces */
+namespace LeooTeam\CacheCleanerBundle\Event;
 
+/** Usages */
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Class CommandListener
+ * @package LeooTeam\CacheCleanerBundle\Event
+ */
 class CommandListener
 {
-    const FILE_PATH = 'src/Daniloff/CacheCleanerBundle/Resources/config/versions.yml';
+    const FILE_PATH = __DIR__ . '/../Resources/config/versions.yml';
 
-    private static $allowedCommands = [
-        'cache:clear',
-        'assets:install',
-        'assetic:dump',
-    ];
+    /** @var array $allowedCommands */
+    private $allowedCommands;
 
     /**
+     * CommandListener constructor.
+     * @param array $allowedCommands
+     */
+    public function __construct($allowedCommands)
+    {
+        $this->allowedCommands = $allowedCommands;
+    }
+
+    /**
+     * @todo: add input parameters ?
+     * @todo: check if directories and file exists
      * @param ConsoleCommandEvent $event
      */
-    public function onExec(ConsoleCommandEvent $event)
+    public function run(ConsoleCommandEvent $event)
     {
-        /**
-         * @todo: add parameters?
-         */
-        $input = $event->getInput();
         $output = $event->getOutput();
         $command = $event->getCommand();
 
-        /**
-         * @todo: make FILE_PATH and allowedCommands config parameters and get them
-         * @todo: check if directories and file exists
-         */
-        if (in_array($command->getName(), self::$allowedCommands)) {
+        if (in_array($command->getName(), $this->allowedCommands)) {
             $config = @Yaml::parse(file_get_contents(self::FILE_PATH));
             $oldVersion = (int)@$config['framework']['assets']['version']++;
 

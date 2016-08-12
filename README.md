@@ -18,7 +18,7 @@ $bundles = array(
 
     ...
 
-    new Daniloff\CacheCleanerBundle\DaniloffCacheCleanerBundle(),
+    new LeooTeam\CacheCleanerBundle\LeooTeamCacheCleanerBundle(),
 
 );
 ```
@@ -26,3 +26,11 @@ $bundles = array(
 ### Requirements ###
 
 This bundle requires Symfony >= 2.8
+
+### Configuration ###
+Optionnal : add the commands that will trigger the event.
+```
+#app/config/config.yml
+leoo_team_cache_cleaner:
+    commands: ['cache:clear', 'assets:install', 'assetic:dump']
+```
