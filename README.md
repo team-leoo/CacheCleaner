@@ -1,7 +1,7 @@
 # README #
 
 ##### Warning! #####
-This project is still under conceptualization / development. There is a lot of things to do and improve. Any contirbution (pull-request, issues...) will be much appreciated.
+This project is still under conceptualization / development. There is a lot of things to do and improve. Any contribution (pull-request, issues...) will be much appreciated.
 
 ### What is this repository for? ###
 This Repository let you change the framework_assets_version to force client to reload assets.
@@ -22,7 +22,7 @@ $bundles = array(
 This bundle requires Symfony >= 2.8
 
 ### Configuration ###
-Required : add the commands that will trigger the event.
+Required : import the configuration file (warning: it might be missing so you must add "ignore_errors").
 ```
 #app/config/config.yml
 imports:
@@ -32,5 +32,13 @@ imports:
 Optionnal : add the commands that will trigger the event.
 ```
 leoo_team_cache_cleaner:
-    commands: ['cache:clear', 'assets:install', 'assetic:dump']
+    commands: ['assets:install', 'assetic:dump']
 ```
+
+### Usages ###
+If you have done the second step from configuration part, each time you'll call a command which is declared in leoo_team_cache_cleaner.commands, the version will be updated automatically.
+You can also use the ccleaner commands:
+
+- ccleaner:update [-c=VERSION_NUMBER] (update the version, parameter is optional)
+- ccleaner:rollback [-c=VERSION_NUMBER] (rollback the version, parameter is optional)
+- ccleaner:show (display current version)

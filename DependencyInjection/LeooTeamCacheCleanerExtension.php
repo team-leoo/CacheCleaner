@@ -26,11 +26,13 @@ class LeooTeamCacheCleanerExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
         
-        if (!isset($config['commands'])) {
-            $config['commands'] = array();
+        foreach (array('commands', 'previous') as $key) {
+            if (!isset($config[$key])) {
+                $config[$key] = array();
+            }
+            $container->setParameter('leoo_team_cache_cleaner.'.$key, $config[$key]);
         }
-        $container->setParameter('leoo_team_cache_cleaner.commands', $config['commands']);
-
+        
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
     }

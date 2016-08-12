@@ -27,6 +27,10 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->variableNode('commands')
             ->end();
+        $rootNode
+            ->children()
+                ->variableNode('previous')
+            ->end();
 
         return $treeBuilder;
     }

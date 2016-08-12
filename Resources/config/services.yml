@@ -1,7 +1,32 @@
 services:
+    leoo_team.cache_cleaner.manager:
+        class: 'LeooTeam\CacheCleanerBundle\Manager\CacheCleanerManager'
+
     leoo_team.cache_cleaner.command_listener:
-        class: 'LeooTeam\CacheCleanerBundle\Event\CommandListener'
+        class: 'LeooTeam\CacheCleanerBundle\Event\CacheCleanerListener'
         arguments:
+            - "@leoo_team.cache_cleaner.manager"
             - "@=container.hasParameter('leoo_team_cache_cleaner.commands') ? parameter('leoo_team_cache_cleaner.commands') : []"
         tags:
-            - { name: kernel.event_listener, event: 'console.command', method: 'run' }
+            - { name: kernel.event_listener, event: 'console.terminate', method: 'run' }
+
+    leoo_team.cache_cleaner.command_show:
+        class: 'LeooTeam\CacheCleanerBundle\Command\CacheCleanerShowCommand'
+        arguments:
+            - "@leoo_team.cache_cleaner.manager"
+        tags:
+            - { name: console.command }
+
+    leoo_team.cache_cleaner.command_update:
+        class: 'LeooTeam\CacheCleanerBundle\Command\CacheCleanerUpdateCommand'
+        arguments:
+            - "@leoo_team.cache_cleaner.manager"
+        tags:
+            - { name: console.command }
+
+    leoo_team.cache_cleaner.command_rollback:
+        class: 'LeooTeam\CacheCleanerBundle\Command\CacheCleanerRollbackCommand'
+        arguments:
+            - "@leoo_team.cache_cleaner.manager"
+        tags:
+            - { name: console.command }
