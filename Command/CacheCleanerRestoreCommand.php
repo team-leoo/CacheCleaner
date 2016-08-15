@@ -9,16 +9,19 @@ namespace LeooTeam\CacheCleanerBundle\Command;
 /** Usages */
 use LeooTeam\CacheCleanerBundle\Manager\CacheCleanerManager;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Exception\CommandNotFoundException;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class CacheCleanerShowCommand
+ * Class CacheCleanerRestoreCommand
  * @package LeooTeam\CacheCleanerBundle\Command
  */
-class CacheCleanerShowCommand extends Command
+class CacheCleanerRestoreCommand extends Command
 {
-    const COMMAND_NAME = 'ccleaner:show';
+    const COMMAND_NAME = 'ccleaner:restore';
 
     /** @var CacheCleanerManager $cacheCleanerManager */
     private $cacheCleanerManager;
@@ -34,28 +37,39 @@ class CacheCleanerShowCommand extends Command
         parent::__construct($name);
     }
     /**
-     * CacheCleanerShowCommand configuration
+     * CacheCleanerRestoreCommand configuration
      */
     protected function configure()
     {
         $this
             ->setName(self::COMMAND_NAME)
-            ->setDescription('This command will rollback the framework_assets_version'
-                .' to its previous version.')
+            ->setDescription('This command will restore the framework_assets_version'
+                .' to a specific version.')
+            ->addOption('cache-version', '-c', InputOption::VALUE_REQUIRED, 'Choose the id of the version.')
         ;
     }
 
     /**
-     * @todo: show a list of previous versions
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return null
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $newVersion = $this->cacheCleanerManager->getCurrentVersion();
-        
-        $output->writeln("Current cache version is <info>{$newVersion}</info>");
+        $oldVersion = $this->cacheCleanerManager->getCurrentVersion();
+        $newVersion = $input->getOption('cache-version');
+
+        if (is_null($newVersion)) {
+            throw new InvalidArgumentException('Number of version is missing.');
+        }
+
+        if ($newVersion[0] == '=') {
+            $newVersion = substr($newVersion, 1);
+        }
+        $newVersion = $this->cacheCleanerManager->restoreVersion($newVersion);
+
+        $output->writeln("Restored asset_version from <info>$oldVersion</info>"
+            . " to <info>{$newVersion}</info>");
 
         return null;
     }

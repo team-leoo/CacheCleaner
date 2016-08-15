@@ -79,6 +79,17 @@ class CacheCleanerManager
     }
 
     /**
+     * @param int $value
+     * @return string
+     */
+    public function restoreVersion($value)
+    {
+        $this->setCurrentVersion((int)$this->getPreviousVersion($value), false);
+
+        return $this->getCurrentVersion();
+    }
+
+    /**
      * @param null|integer $version
      * @return string
      */
@@ -86,12 +97,20 @@ class CacheCleanerManager
     {
         $config = $this->getConfig();
         
-        if (null !== $version and $key = array_search($version, $config['leoo_team_cache_cleaner']['previous'])) {
-            $config['leoo_team_cache_cleaner']['previous'] = array_slice(
-                $config['leoo_team_cache_cleaner']['previous'],
-                0,
-                $key + 1
-            );
+        if (null !== $version) {
+            if ($version < 0 and count($config['leoo_team_cache_cleaner']['previous']) > -$version) {
+                $config['leoo_team_cache_cleaner']['previous'] = array_slice(
+                    $config['leoo_team_cache_cleaner']['previous'],
+                    0,
+                    count($config['leoo_team_cache_cleaner']['previous']) + $version + 1
+                );
+            } elseif ($key = array_search($version, $config['leoo_team_cache_cleaner']['previous'])) {
+                $config['leoo_team_cache_cleaner']['previous'] = array_slice(
+                    $config['leoo_team_cache_cleaner']['previous'],
+                    0,
+                    $key + 1
+                );
+            }
         }
 
         if (0 < count($config['leoo_team_cache_cleaner']['previous'])) {

@@ -30,3 +30,10 @@ services:
             - "@leoo_team.cache_cleaner.manager"
         tags:
             - { name: console.command }
+
+    leoo_team.cache_cleaner.command_restore:
+        class: 'LeooTeam\CacheCleanerBundle\Command\CacheCleanerRestoreCommand'
+        arguments:
+            - "@leoo_team.cache_cleaner.manager"
+        tags:
+            - { name: console.command }

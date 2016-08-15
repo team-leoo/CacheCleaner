@@ -43,7 +43,12 @@ class CacheCleanerRollbackCommand extends Command
             ->setName(self::COMMAND_NAME)
             ->setDescription('This command will rollback the framework_assets_version'
                 .' to its previous version.')
-            ->addOption('cache-version', '-c', InputOption::VALUE_OPTIONAL, 'Choose a specific version.')
+            ->addOption(
+                'cache-version-number',
+                '-c',
+                InputOption::VALUE_OPTIONAL,
+                'Choose a number of version you want to skip.'
+            )
         ;
     }
 
@@ -56,12 +61,12 @@ class CacheCleanerRollbackCommand extends Command
     {
         $oldVersion = $this->cacheCleanerManager->getCurrentVersion();
 
-        if ($input->getOption('cache-version')) {
-            $newVersion = $input->getOption('cache-version');
+        if ($input->getOption('cache-version-number')) {
+            $newVersion = $input->getOption('cache-version-number');
             if ($newVersion[0] == '=') {
                 $newVersion = substr($newVersion, 1);
             }
-            $newVersion = $this->cacheCleanerManager->decrementVersion($newVersion);
+            $newVersion = $this->cacheCleanerManager->decrementVersion(-$newVersion);
         } else {
             $newVersion = $this->cacheCleanerManager->decrementVersion();
         }

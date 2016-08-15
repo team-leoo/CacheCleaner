@@ -40,5 +40,6 @@ If you have done the second step from configuration part, each time you'll call 
 You can also use the ccleaner commands:
 
 - ccleaner:update (-c=VERSION_NUMBER) --> update the version, parameter is optional
-- ccleaner:rollback (-c=VERSION_NUMBER) --> rollback the version, parameter is optional
+- ccleaner:rollback (-c=ROLLBACK_COUNT) --> rollback the version, parameter is optional
+- ccleaner:restore -c=VERSION_NUMBER --> restore the specified version, parameter is *required*
 - ccleaner:show --> display current version
