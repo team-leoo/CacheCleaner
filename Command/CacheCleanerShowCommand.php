@@ -33,6 +33,7 @@ class CacheCleanerShowCommand extends Command
         $this->cacheCleanerManager = $cacheCleanerManager;
         parent::__construct($name);
     }
+    
     /**
      * CacheCleanerShowCommand configuration
      */
@@ -46,7 +47,6 @@ class CacheCleanerShowCommand extends Command
     }
 
     /**
-     * @todo: show a list of previous versions
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return null
@@ -56,6 +56,8 @@ class CacheCleanerShowCommand extends Command
         $newVersion = $this->cacheCleanerManager->getCurrentVersion();
         
         $output->writeln("Current cache version is <info>{$newVersion}</info>");
+        $output->writeln("The previous versions were: "
+            ."<info>{$this->cacheCleanerManager->listPreviousVersions()}</info>");
 
         return null;
     }

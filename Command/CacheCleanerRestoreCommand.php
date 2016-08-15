@@ -9,7 +9,6 @@ namespace LeooTeam\CacheCleanerBundle\Command;
 /** Usages */
 use LeooTeam\CacheCleanerBundle\Manager\CacheCleanerManager;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Exception\CommandNotFoundException;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -36,6 +35,7 @@ class CacheCleanerRestoreCommand extends Command
         $this->cacheCleanerManager = $cacheCleanerManager;
         parent::__construct($name);
     }
+    
     /**
      * CacheCleanerRestoreCommand configuration
      */
@@ -62,10 +62,13 @@ class CacheCleanerRestoreCommand extends Command
         if (is_null($newVersion)) {
             throw new InvalidArgumentException('Number of version is missing.');
         }
-
         if ($newVersion[0] == '=') {
             $newVersion = substr($newVersion, 1);
         }
+        if (!is_numeric($newVersion)) {
+            throw new InvalidArgumentException('Version must be an integer.');
+        }
+
         $newVersion = $this->cacheCleanerManager->restoreVersion($newVersion);
 
         $output->writeln("Restored asset_version from <info>$oldVersion</info>"

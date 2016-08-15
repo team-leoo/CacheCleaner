@@ -12,10 +12,10 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * Class CacheCleanerManager
  * @package LeooTeam\CacheCleanerBundle\Manager
- * @todo: do not keep more than 20 previous version in versions.yml
  */
 class CacheCleanerManager
 {
+    const HISTORY_LIMIT = 20;
     const FILE_PATH = __DIR__ . '/../Resources/config';
     const FILE_NAME = 'versions.yml';
 
@@ -30,6 +30,16 @@ class CacheCleanerManager
     {
         $this->getConfig();
     }
+    
+    /**
+     * @return string
+     */
+    public function listPreviousVersions()
+    {
+        $versions = $this->getConfig()['leoo_team_cache_cleaner']['previous'];
+        krsort($versions);
+        return print_r($versions, true);
+    }
 
     /**
      * @return string
@@ -41,6 +51,7 @@ class CacheCleanerManager
 
     /**
      * @param null $version
+     * @param bool $savePrevious
      * @return string
      */
     public function setCurrentVersion($version, $savePrevious = true)
@@ -49,7 +60,7 @@ class CacheCleanerManager
             $this->setPreviousVersion();
         }
         $config = $this->getConfig();
-        $config['framework']['assets']['version'] = $version;
+        $config['framework']['assets']['version'] = (int)$version;
 
         $this->setConfig($config)->persistConfig();
         
@@ -131,7 +142,14 @@ class CacheCleanerManager
     private function setPreviousVersion()
     {
         $config = $this->getConfig();
-        $config['leoo_team_cache_cleaner']['previous'][] = $config['framework']['assets']['version'];
+        $config['leoo_team_cache_cleaner']['previous'][] = (int)$config['framework']['assets']['version'];
+        if (count($config['leoo_team_cache_cleaner']['previous']) >= self::HISTORY_LIMIT) {
+            $config['leoo_team_cache_cleaner']['previous'] = array_slice(
+                $config['leoo_team_cache_cleaner']['previous'],
+                count($config['leoo_team_cache_cleaner']['previous']) - self::HISTORY_LIMIT,
+                self::HISTORY_LIMIT
+            );
+        }
 
         return $this->setConfig($config);
     }

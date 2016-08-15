@@ -9,6 +9,7 @@ namespace LeooTeam\CacheCleanerBundle\Command;
 /** Usages */
 use LeooTeam\CacheCleanerBundle\Manager\CacheCleanerManager;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -34,6 +35,7 @@ class CacheCleanerRollbackCommand extends Command
         $this->cacheCleanerManager = $cacheCleanerManager;
         parent::__construct($name);
     }
+    
     /**
      * CacheCleanerRollbackCommand configuration
      */
@@ -65,6 +67,9 @@ class CacheCleanerRollbackCommand extends Command
             $newVersion = $input->getOption('cache-version-number');
             if ($newVersion[0] == '=') {
                 $newVersion = substr($newVersion, 1);
+            }
+            if (!is_numeric($newVersion)) {
+                throw new InvalidArgumentException('Version must be an integer.');
             }
             $newVersion = $this->cacheCleanerManager->decrementVersion(-$newVersion);
         } else {
