@@ -1,0 +1,15 @@
+{
+    "name": "leooteam/cache-cleaner-bundle",
+    "description": "Easy and automatic assets versioning for Symfony",
+    "require": {
+        "symfony/symfony": ">=2.8"
+    },
+    "license": "MIT License",
+    "authors": [
+        {
+            "name": "Aleksandr Daniloff",
+            "email": "adaniloff.dev@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
