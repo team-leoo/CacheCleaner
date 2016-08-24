@@ -27,6 +27,13 @@ $bundles = array(
 This bundle requires Symfony >= 2.8
 
 ### Configuration ###
+**Required** : import the configuration file (warning: it might be missing so you must add "ignore_errors").		
+```		
+#app/config/config.yml		
+imports:		
+    - { resource: "@LeooTeamCacheCleanerBundle/Resources/config/versions.yml", ignore_errors: true }		
+```		
+ 
 **Optional** : add some commands that will trigger the event.
 ```
 leoo_team_cache_cleaner:
