@@ -8,9 +8,9 @@ You can either define specific commands (like `assets:install` or `assetic:dump`
 Add to your composer.json file:
 
 ```
-    "require": {
-       "leooteam/cache-cleaner-bundle": "dev-master@dev"
-    },
+"require": {
+    "leooteam/cache-cleaner-bundle": "dev-master@dev"
+},
 ````
 
 Then, run `composer update leooteam/cache-cleaner-bundle`
