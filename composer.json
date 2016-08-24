@@ -1,6 +1,9 @@
 {
     "name": "leooteam/cache-cleaner-bundle",
     "description": "Easy and automatic assets versioning for Symfony",
+    "autoload":     {
+        "psr-4": { "LeooTeam\\CacheCleanerBundle\\": "" }
+    },
     "require": {
         "symfony/symfony": ">=2.8"
     },
