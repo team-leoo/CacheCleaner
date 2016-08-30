@@ -16,9 +16,11 @@ use Symfony\Component\Yaml\Yaml;
 class CacheCleanerManager
 {
     const HISTORY_LIMIT = 20;
-    const FILE_PATH = __DIR__ . '/../Resources/config';
     const FILE_NAME = 'versions.yml';
 
+    /** @var string $filePath */
+    private $filePath;
+    
     /** @var array $config */
     private $config;
 
@@ -28,7 +30,21 @@ class CacheCleanerManager
      */
     public function __construct()
     {
+        $this->filePath = __DIR__ . '/../Resources/config';
         $this->getConfig();
+    }
+
+    /**
+     * @param bool $dirOnly
+     * @return string
+     */
+    public function getFilePath($dirOnly = false)
+    {
+        if (false == $dirOnly) {
+            return $this->filePath . '/' . self::FILE_NAME;
+        }
+
+        return $this->filePath;
     }
     
     /**
@@ -164,8 +180,8 @@ class CacheCleanerManager
         }
         
         /** @var array $config */
-        if (file_exists(self::FILE_PATH . '/' . self::FILE_NAME)) {
-            $config = Yaml::parse(file_get_contents(self::FILE_PATH . '/' . self::FILE_NAME));
+        if (file_exists($this->getFilePath())) {
+            $config = Yaml::parse(file_get_contents($this->getFilePath()));
         }
         if (!isset($config['framework'])
             or !isset($config['framework']['assets'])
@@ -196,7 +212,7 @@ class CacheCleanerManager
      */
     private function persistConfig()
     {
-        file_put_contents(self::FILE_PATH . '/' . self::FILE_NAME, Yaml::dump($this->config));
+        file_put_contents($this->getFilePath(), Yaml::dump($this->config));
 
         return $this;
     }
