@@ -16,8 +16,10 @@ use Symfony\Component\Yaml\Yaml;
 class CacheCleanerManager
 {
     const HISTORY_LIMIT = 20;
-    const FILE_NAME = 'versions.yml';
 
+    /** @var string $fileName */
+    private $fileName;
+    
     /** @var string $filePath */
     private $filePath;
     
@@ -30,6 +32,7 @@ class CacheCleanerManager
      */
     public function __construct()
     {
+        $this->fileName = 'versions.yml';
         $this->filePath = __DIR__ . '/../Resources/config';
         $this->getConfig();
     }
@@ -41,7 +44,7 @@ class CacheCleanerManager
     public function getFilePath($dirOnly = false)
     {
         if (false == $dirOnly) {
-            return $this->filePath . '/' . self::FILE_NAME;
+            return $this->filePath . '/' . $this->fileName;
         }
 
         return $this->filePath;
