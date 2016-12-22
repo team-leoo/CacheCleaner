@@ -134,7 +134,7 @@ class CacheCleanerManager
                     0,
                     count($config['leoo_team_cache_cleaner']['previous']) + $version + 1
                 );
-            } elseif ($key = array_search($version, $config['leoo_team_cache_cleaner']['previous'])) {
+            } elseif (false !== ($key = array_search($version, $config['leoo_team_cache_cleaner']['previous']))) {
                 $config['leoo_team_cache_cleaner']['previous'] = array_slice(
                     $config['leoo_team_cache_cleaner']['previous'],
                     0,
