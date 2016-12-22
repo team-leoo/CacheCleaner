@@ -191,7 +191,7 @@ class CacheCleanerManager
             or !isset($config['framework']['assets']['version'])
         ) {
             $config = array(
-                'framework' => array('assets' => array('version' => 0)),
+                'framework' => array('assets' => array('version' => time())),
                 'leoo_team_cache_cleaner' => array('previous' => array()),
             );
         }
